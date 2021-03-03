@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { Header } from "./components/Header";
+import Login from "./pages/Login";
 
-function App() {
+import { selectCurrentUser } from "./store/selectors";
+import { requestCurrentUser } from "./features/user/geese";
+
+const MainWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+`;
+
+const MainContent = styled.div`
+  height: calc(100vh - 64px);
+  flex-direction: column;
+  display: flex;
+`;
+
+const App: React.FC = () => {
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(requestCurrentUser());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainWrapper>
+      {currentUser ? (
+        <>
+          <Header />
+          <MainContent></MainContent>
+        </>
+      ) : (
+        <Login />
+      )}
+    </MainWrapper>
   );
-}
+};
 
 export default App;

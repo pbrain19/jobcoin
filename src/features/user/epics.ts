@@ -3,10 +3,8 @@ import { Epic } from "redux-observable";
 import { of, concat, from } from "rxjs";
 import { catchError, filter, mergeMap } from "rxjs/operators";
 import { isOfType } from "typesafe-actions";
-import {
-  GET_TRANSACTIONS_FOR_ADDRESS,
-  updateTransactionsForUser,
-} from "../crypto/geese";
+import { updateTransactionsForUser } from "../crypto/geese";
+import { loginUser } from "../user/geese";
 import { clearAlert, openLoader, openError } from "../snackbar/geese";
 
 import {
@@ -25,7 +23,12 @@ export const getUserEpic: Epic<RootAction, RootAction, RootState, Services> = (
     filter(isOfType(REQUEST_CURRENT_USER)),
     mergeMap(() => {
       const currentUser = userService.getCurrentUser();
-      return concat(of(updateCurrentUser(currentUser)));
+
+      if (currentUser) {
+        return of(loginUser(currentUser.walletAddress));
+      } else {
+        return of(updateCurrentUser(currentUser));
+      }
     })
   );
 
@@ -42,9 +45,8 @@ export const loginUserEpic: Epic<
         of(openLoader("Login in")),
         from(cryptoService.getTransactionsForAddress(payload)).pipe(
           mergeMap(({ data }) => {
-            const user = userService.loginUser(payload);
-
             if (data.transactions.length) {
+              const user = userService.loginUser(payload);
               return [
                 clearAlert(),
                 updateCurrentUser(user),
@@ -74,6 +76,9 @@ export const logoutUserEpic: Epic<
     mergeMap(() => {
       userService.logoutUser();
 
-      return [updateCurrentUser(null)];
+      return [
+        updateCurrentUser(null),
+        updateTransactionsForUser({ transactions: [], balance: "" }),
+      ];
     })
   );

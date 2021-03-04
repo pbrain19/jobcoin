@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Header } from "./components/Header";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import SnackBar from "./components/SnackBar";
 
 import { selectCurrentUser } from "./store/selectors";
 import { requestCurrentUser } from "./features/user/geese";
@@ -16,8 +18,6 @@ const MainWrapper = styled.div`
 
 const MainContent = styled.div`
   height: calc(100vh - 64px);
-  flex-direction: column;
-  display: flex;
 `;
 
 const App: React.FC = () => {
@@ -30,10 +30,13 @@ const App: React.FC = () => {
 
   return (
     <MainWrapper>
+      <SnackBar />
       {currentUser ? (
         <>
           <Header />
-          <MainContent></MainContent>
+          <MainContent>
+            <Dashboard />
+          </MainContent>
         </>
       ) : (
         <Login />

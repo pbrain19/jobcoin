@@ -14,7 +14,7 @@ export interface AddressResponse {
 }
 
 export interface CreateTransactionType {
-  to: string;
-  from: string;
+  toAddress: string;
+  fromAddress: string;
   amount: string;
 }

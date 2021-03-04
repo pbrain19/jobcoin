@@ -7,16 +7,17 @@ import {
   Card,
   createStyles,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import styled from "styled-components";
 import { loginUser } from "../features/user/geese";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-interface indexProps {}
 
 const StyledCard = styled(Card)`
   width: 300px;
   margin: 150px auto;
+  padding: 20px;
 `;
 
 const ImageContainer = styled.div`
@@ -30,6 +31,7 @@ const StyledAvatar = styled(Avatar)`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+  padding: 20px;
 
   Button {
     margin-top: 30px;
@@ -46,7 +48,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Index: React.FC<indexProps> = () => {
+const Login: React.FC = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm();
   const classes = useStyles();
@@ -61,6 +63,9 @@ const Index: React.FC<indexProps> = () => {
           <StyledAvatar className={classes.large}>J</StyledAvatar>
         </ImageContainer>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
+          <Typography align="center" variant="h5">
+            Welcome! Sign in with your Jobcoin address
+          </Typography>
           <Controller
             as={TextField}
             label="Wallet Address"
@@ -77,4 +82,4 @@ const Index: React.FC<indexProps> = () => {
   );
 };
 
-export default Index;
+export default Login;

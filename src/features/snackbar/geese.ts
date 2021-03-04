@@ -57,11 +57,9 @@ const snackbar = createReducer(initialState.snackbar)
     };
   })
   .handleType(OPEN_ERROR, (_, action) => {
-    let effectiveMessage = action.payload;
-
     return {
       isOpen: true,
-      message: JSON.stringify(effectiveMessage),
+      message: action.payload,
       type: "error",
     };
   })
@@ -70,7 +68,7 @@ const snackbar = createReducer(initialState.snackbar)
     type: "success",
     message: action.payload,
   }))
-  .handleType(CLOSE_ALERT, (state, action) => ({
+  .handleType(CLOSE_ALERT, (state) => ({
     isOpen: false,
     message: state.message,
     type: "info",

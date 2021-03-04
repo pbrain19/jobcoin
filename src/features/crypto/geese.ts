@@ -54,13 +54,13 @@ const initialState: Crypto = {
   },
 };
 
-const currentUser = createReducer(initialState.transactions).handleType(
-  UPDATE_TRANSACTIONS,
+const currentUser = createReducer(initialState.currentUser).handleType(
+  UPDATE_TRANSACTIONS_FOR_USER,
   (state, action) => action.payload
 );
 
-const transactions = createReducer(initialState.currentUser).handleType(
-  UPDATE_TRANSACTIONS_FOR_USER,
+const transactions = createReducer(initialState.transactions).handleType(
+  UPDATE_TRANSACTIONS,
   (state, action) => action.payload
 );
 

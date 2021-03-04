@@ -80,7 +80,7 @@ export const createTransactionEpic: Epic<
         from(cryptoService.createTransaction(action.payload)).pipe(
           mergeMap((response) => [
             openCreated("Transaction created"),
-            getTransactionsForAddress(action.payload.from),
+            getTransactionsForAddress(action.payload.fromAddress),
           ]),
           catchError((err) => [openError(err)])
         )

@@ -3,9 +3,10 @@ export interface UserType {
 }
 
 export interface Transaction {
-  to: string;
-  from: string;
   amount: string;
+  fromAddress?: string;
+  timestamp: string;
+  toAddress: string;
 }
 
 export interface AddressResponse {

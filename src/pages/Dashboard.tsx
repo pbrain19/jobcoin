@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 import TransactionForm from "../components/TransactionForm";
-import { Card, Typography } from "@material-ui/core";
+import { Card, Typography, Container } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { selectCurrentUser, selectCurrentWallet } from "../store/selectors";
+import TransactionGraph from "../components/TransactionGraph";
+import { UserType } from "../types/models";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,8 +18,6 @@ const LeftPanel = styled.div`
   display: flex;
   width: 300px;
   flex-direction: column;
-  background: blue;
-
   padding: 20px;
 `;
 const StyledCard = styled(Card)`
@@ -28,7 +28,6 @@ const StyledCard = styled(Card)`
 const RightPanel = styled.div`
   display: flex;
   flex-grow: 1;
-  background: red;
 `;
 
 const CardHeader = styled(Typography)`
@@ -41,8 +40,8 @@ const CardBody = styled(Typography)`
 `;
 
 const Index: React.FC = () => {
-  const currentUser = useSelector(selectCurrentUser);
   const currentUserWallet = useSelector(selectCurrentWallet);
+  const currentUser = useSelector(selectCurrentUser) as UserType;
 
   return (
     <Wrapper>
@@ -63,7 +62,14 @@ const Index: React.FC = () => {
           <TransactionForm />
         </StyledCard>
       </LeftPanel>
-      <RightPanel></RightPanel>
+      <RightPanel>
+        <Container>
+          <TransactionGraph
+            transactions={currentUserWallet.transactions}
+            currentUserAddress={currentUser.walletAddress}
+          />
+        </Container>
+      </RightPanel>
     </Wrapper>
   );
 };
